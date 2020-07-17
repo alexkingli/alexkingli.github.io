@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Flink Checkpoint | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一. 基础概念1.1 checkpoint概念： 将某一个时间点所有的 Flink 算子的状态进行持久化这些持久化状态叫做 轻量分布式快照这个过程就是 checkpoint目的：作业失败时能从最近的状态恢复，保证计算时数据一致性 1.2 有状态的计算场景示例：数据源：网络访问日志需求：实时统计每个 url 的访问次数状态：被“保存”起来的算子中的计算结果 二. 状态类型与使用示例三. Checkp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flink Checkpoint">
+<meta property="og:url" content="http://yoursite.com/2020/07/17/Flink-Checkpoint/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一. 基础概念1.1 checkpoint概念： 将某一个时间点所有的 Flink 算子的状态进行持久化这些持久化状态叫做 轻量分布式快照这个过程就是 checkpoint目的：作业失败时能从最近的状态恢复，保证计算时数据一致性 1.2 有状态的计算场景示例：数据源：网络访问日志需求：实时统计每个 url 的访问次数状态：被“保存”起来的算子中的计算结果 二. 状态类型与使用示例三. Checkp">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-17T05:59:53.000Z">
+<meta property="article:modified_time" content="2020-07-17T08:30:02.082Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Flink-Checkpoint" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/17/Flink-Checkpoint/" class="article-date">
+  <time datetime="2020-07-17T05:59:53.000Z" itemprop="datePublished">2020-07-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Flink Checkpoint
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一-基础概念"><a href="#一-基础概念" class="headerlink" title="一. 基础概念"></a>一. 基础概念</h2><h3 id="1-1-checkpoint"><a href="#1-1-checkpoint" class="headerlink" title="1.1 checkpoint"></a>1.1 checkpoint</h3><p>概念： 将某一个时间点所有的 Flink 算子的状态进行持久化<br>这些持久化状态叫做 轻量分布式快照<br>这个过程就是 checkpoint<br>目的：作业失败时能从最近的状态恢复，保证计算时数据一致性</p>
+<h3 id="1-2-有状态的计算"><a href="#1-2-有状态的计算" class="headerlink" title="1.2 有状态的计算"></a>1.2 有状态的计算</h3><p>场景示例：<br>数据源：网络访问日志<br>需求：实时统计每个 url 的访问次数<br>状态：被“保存”起来的算子中的计算结果</p>
+<h2 id="二-状态类型与使用示例"><a href="#二-状态类型与使用示例" class="headerlink" title="二. 状态类型与使用示例"></a>二. 状态类型与使用示例</h2><h2 id="三-Checkpoint-执行机制"><a href="#三-Checkpoint-执行机制" class="headerlink" title="三. Checkpoint 执行机制"></a>三. Checkpoint 执行机制</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/07/17/Flink-Checkpoint/" data-id="ckcpz1j150000z0ia6zw2erri" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/07/17/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/07/17/Flink-Checkpoint/">Flink Checkpoint</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/17/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
